@@ -217,17 +217,20 @@ function FaqItem({ q, a }: { q: string; a: string }) {
 export default function LandingPage() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [buying, setBuying] = useState(false);
+  const [buyError, setBuyError] = useState("");
 
   async function handleBuy() {
     if (buying) return;
     setBuying(true);
+    setBuyError("");
     try {
       const res = await fetch("/api/checkout", { method: "POST" });
-      const { url, error } = await res.json();
-      if (error || !url) throw new Error(error ?? "No checkout URL returned.");
-      window.location.href = url;
+      const data = await res.json();
+      if (data.error || !data.url) throw new Error(data.error ?? "No checkout URL returned.");
+      window.location.href = data.url;
     } catch (err) {
-      console.error("[handleBuy]", err);
+      const msg = err instanceof Error ? err.message : "Something went wrong.";
+      setBuyError(msg);
       setBuying(false);
     }
   }
@@ -680,6 +683,9 @@ export default function LandingPage() {
           <button onClick={handleBuy} disabled={buying} className="btn-orange w-full py-4 text-base disabled:opacity-60 disabled:cursor-not-allowed disabled:shadow-none">
             {buying ? "Redirecting to checkout..." : "Unlock Unlimited Meals"}
           </button>
+          {buyError && (
+            <p className="body-mono text-red-500 text-xs text-center mt-3">{buyError}</p>
+          )}
         </div>
       </section>
 
