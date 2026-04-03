@@ -216,12 +216,20 @@ function FaqItem({ q, a }: { q: string; a: string }) {
 /* ─── Page ────────────────────────────────────────────────── */
 export default function LandingPage() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [buying, setBuying] = useState(false);
 
   async function handleBuy() {
-    const res = await fetch("/api/checkout", { method: "POST" });
-    const { url, error } = await res.json();
-    if (error || !url) return;
-    window.location.href = url;
+    if (buying) return;
+    setBuying(true);
+    try {
+      const res = await fetch("/api/checkout", { method: "POST" });
+      const { url, error } = await res.json();
+      if (error || !url) throw new Error(error ?? "No checkout URL returned.");
+      window.location.href = url;
+    } catch (err) {
+      console.error("[handleBuy]", err);
+      setBuying(false);
+    }
   }
 
   return (
@@ -276,6 +284,7 @@ export default function LandingPage() {
             ))}
             <button
               onClick={() => { setMenuOpen(false); handleBuy(); }}
+              disabled={buying}
               className="btn-orange mt-3 py-3 text-center text-sm"
             >
               Get Started — $19
@@ -314,7 +323,7 @@ export default function LandingPage() {
             </p>
 
             <div className="flex flex-wrap gap-3 mb-5">
-              <button onClick={handleBuy} className="btn-orange flex items-center gap-2 px-6 py-3.5">
+              <button onClick={handleBuy} disabled={buying} className="btn-orange flex items-center gap-2 px-6 py-3.5 disabled:opacity-60 disabled:cursor-not-allowed disabled:shadow-none">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
                 </svg>
@@ -668,12 +677,9 @@ export default function LandingPage() {
               </li>
             ))}
           </ul>
-          <button onClick={handleBuy} className="btn-orange w-full py-4 text-base">
-            Unlock Unlimited Meals
+          <button onClick={handleBuy} disabled={buying} className="btn-orange w-full py-4 text-base disabled:opacity-60 disabled:cursor-not-allowed disabled:shadow-none">
+            {buying ? "Redirecting to checkout..." : "Unlock Unlimited Meals"}
           </button>
-          <p className="text-[#C0BAB0] text-xs mt-4">
-            Stripe coming soon — get notified when it&apos;s live.
-          </p>
         </div>
       </section>
 
