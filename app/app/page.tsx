@@ -38,28 +38,16 @@ function useRotatingMessage(messages: string[], active: boolean) {
   return messages[index];
 }
 
-/* ─── Mock image analysis ─────────────────────────────────── */
-const MOCK_RESULTS: ScanResult[] = [
-  {
-    itemsDetected: ["eggs", "milk", "bread", "butter", "cheese"],
-    suggestions: ["French toast", "Scrambled eggs", "Grilled cheese"],
-    vibe: "Your fridge is 60% functional, 40% chaos. We respect it.",
-  },
-  {
-    itemsDetected: ["chicken", "garlic", "olive oil", "lemon", "spinach"],
-    suggestions: ["Garlic chicken", "Chicken stir-fry", "Lemon herb bowl"],
-    vibe: "Actually impressive. Are you a chef or just anxious?",
-  },
-  {
-    itemsDetected: ["leftover pasta", "tomatoes", "onion", "parmesan"],
-    suggestions: ["Pasta bake", "Quick tomato pasta", "Frittata"],
-    vibe: "The leftovers are judging you. Use them.",
-  },
-];
 
-async function analyzePantryImage(_image: File): Promise<ScanResult> {
-  await new Promise((r) => setTimeout(r, 2800));
-  return MOCK_RESULTS[Math.floor(Math.random() * MOCK_RESULTS.length)];
+async function analyzePantryImage(image: File): Promise<ScanResult> {
+  const formData = new FormData();
+  formData.append("image", image);
+  const res = await fetch("/api/analyze", { method: "POST", body: formData });
+  if (!res.ok) {
+    const { error } = await res.json().catch(() => ({}));
+    throw new Error(error ?? "Image analysis failed. Try again.");
+  }
+  return res.json();
 }
 
 /* ─── Difficulty badge ────────────────────────────────────── */
@@ -409,6 +397,9 @@ export default function AppPage() {
     try {
       const result = await analyzePantryImage(image);
       setScanResult(result);
+      setPreviewOpen(false);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Image analysis failed. Try again.");
       setPreviewOpen(false);
     } finally {
       setScanning(false);
