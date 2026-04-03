@@ -21,7 +21,7 @@ export async function POST(req: NextRequest) {
   }
 
   if (event.type === "checkout.session.completed") {
-    const session = event.data.object as Stripe.CheckoutSession;
+    const session = event.data.object as Stripe.Checkout.Session;
     // Payment confirmed on Stripe's end.
     // The activate route already handles the cookie for the browser session.
     // This webhook is the source of truth for server-side fulfillment
