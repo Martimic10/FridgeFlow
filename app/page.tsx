@@ -179,7 +179,7 @@ const FAQS = [
   },
   {
     q: "Is this a subscription?",
-    a: "No. $15 once. That's it. You get unlimited generations, all future updates, and zero recurring charges. We hate subscriptions too.",
+    a: "No. $7 once. That's it. You get unlimited generations, all future updates, and zero recurring charges. We hate subscriptions too.",
   },
   {
     q: "What AI model powers FridgeFlow?",
@@ -330,7 +330,7 @@ export default function LandingPage() {
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
                 </svg>
-                Get Started — $15
+                Get Started — $7
               </button>
               <a href="#how-it-works" className="btn-green-outline flex items-center gap-2 px-6 py-3.5">
                 See how it works
@@ -660,7 +660,7 @@ export default function LandingPage() {
           <div className="inline-flex items-center gap-1.5 bg-[#FFF3CD] border border-[#FFD966]/40 text-[#B45309] text-xs font-semibold px-3 py-1 rounded-full mb-6">
             🔥 Early access pricing
           </div>
-          <div className="heading-chunky text-7xl mb-2 text-[#1A1A1A]">$15</div>
+          <div className="heading-chunky text-7xl mb-2 text-[#1A1A1A]">$7</div>
           <div className="body-mono text-[#6B6B6B] text-sm mb-1">Lifetime access</div>
           <div className="body-mono text-[#9A9A9A] text-xs mb-8">One time. No subscription. No surprises.</div>
           <ul className="text-sm text-[#6B6B6B] space-y-3 mb-8 text-left">
