@@ -10,7 +10,7 @@ export async function POST(req: NextRequest) {
   }
 
   // Derive base URL from the request so NEXT_PUBLIC_BASE_URL is optional
-  const origin = process.env.NEXT_PUBLIC_BASE_URL ?? `${req.nextUrl.protocol}//${req.nextUrl.host}`;
+  const origin = (process.env.NEXT_PUBLIC_BASE_URL ?? `${req.nextUrl.protocol}//${req.nextUrl.host}`).replace(/\/$/, "");
 
   const session = await stripe.checkout.sessions.create({
     mode: "payment",
