@@ -195,11 +195,7 @@ function GenerateContent() {
       {/* Nav */}
       <nav className="flex items-center justify-between px-6 sm:px-10 py-5 max-w-6xl mx-auto border-b border-[#E0DBD3] bg-[#F2EFE9]">
         <button onClick={() => router.push("/")} className="flex items-center gap-2">
-          <div className="w-7 h-7 rounded-full bg-[#2D6A4F] flex items-center justify-center">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="white">
-              <path d="M12 2C8 2 4 6 4 10c0 5 8 12 8 12s8-7 8-12c0-4-4-8-8-8z"/>
-            </svg>
-          </div>
+          <img src="/fridgeflow-logo-removebg-preview.png" alt="FridgeFlow logo" className="w-10 h-10 object-contain" />
           <span className="font-bold text-[#1A1A1A] tracking-tight">FridgeFlow</span>
         </button>
         <span className="text-xs text-[#9A9A9A] hidden sm:block">Enter your ingredients below</span>

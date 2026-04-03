@@ -4,12 +4,18 @@ import { useEffect, useRef, useState } from "react";
 
 /* ─── Cursor follower ─────────────────────────────────────── */
 function CursorFollower() {
+  const [isMobile, setIsMobile] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
   const pos = useRef({ x: -100, y: -100 });
   const cur = useRef({ x: -100, y: -100 });
   const raf = useRef<number | null>(null);
 
   useEffect(() => {
+    setIsMobile(/iPhone|iPad|iPod|Android/i.test(navigator.userAgent));
+  }, []);
+
+  useEffect(() => {
+    if (isMobile) return;
     function onMove(e: MouseEvent) {
       pos.current = { x: e.clientX, y: e.clientY };
     }
@@ -30,7 +36,9 @@ function CursorFollower() {
       window.removeEventListener("mousemove", onMove);
       if (raf.current) cancelAnimationFrame(raf.current);
     };
-  }, []);
+  }, [isMobile]);
+
+  if (isMobile) return null;
 
   return (
     <div
@@ -179,7 +187,7 @@ const FAQS = [
   },
   {
     q: "Can I use it on my phone?",
-    a: "Yes — it's fully mobile-compatible. Works great on any device with a browser. No app store required.",
+    a: "Yes — and on mobile it gets even better. Open your camera, point it at your fridge, and FridgeFlow scans the photo and detects your ingredients automatically. No typing needed. No app store either.",
   },
 ];
 
@@ -209,6 +217,11 @@ function FaqItem({ q, a }: { q: string; a: string }) {
 export default function LandingPage() {
   const [menuOpen, setMenuOpen] = useState(false);
 
+  function handleBuy() {
+    document.cookie = "fridgeflow_paid=true; path=/; max-age=31536000";
+    window.location.href = "/app";
+  }
+
   return (
     <div className="min-h-screen bg-[#F2EFE9] text-[#1A1A1A]">
       <CursorFollower />
@@ -217,12 +230,7 @@ export default function LandingPage() {
       <nav className="sticky top-0 z-40 bg-[#F2EFE9]/95 backdrop-blur-sm border-b border-[#E0DBD3]">
         <div className="flex items-center justify-between px-5 sm:px-10 py-4 max-w-6xl mx-auto">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-full bg-[#2D6A4F] flex items-center justify-center">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                <path d="M12 2C8 2 4 6 4 10c0 5 8 12 8 12s8-7 8-12c0-4-4-8-8-8z" fill="white" opacity="0.9"/>
-                <circle cx="12" cy="10" r="3" fill="white"/>
-              </svg>
-            </div>
+            <img src="/fridgeflow-logo-removebg-preview.png" alt="FridgeFlow logo" className="w-10 h-10 object-contain" />
             <span className="font-bold text-[#1A1A1A] text-lg tracking-tight">FridgeFlow</span>
           </div>
 
@@ -264,13 +272,12 @@ export default function LandingPage() {
                 {link.label}
               </a>
             ))}
-            <a
-              href="#pricing"
-              onClick={() => setMenuOpen(false)}
+            <button
+              onClick={() => { setMenuOpen(false); handleBuy(); }}
               className="btn-orange mt-3 py-3 text-center text-sm"
             >
               Get Started — $19
-            </a>
+            </button>
           </div>
         )}
       </nav>
@@ -298,18 +305,19 @@ export default function LandingPage() {
             </h1>
 
             <p className="body-mono text-[#6B6B6B] max-w-md mb-8">
-              Type what you have. FridgeFlow instantly suggests practical,
-              delicious recipes so you waste less food and skip the
+              Snap a photo of your fridge or type what you have — FridgeFlow
+              instantly identifies your ingredients and suggests practical,
+              delicious recipes. Waste less food and skip the
               &quot;what should I cook?&quot; stress.
             </p>
 
             <div className="flex flex-wrap gap-3 mb-5">
-              <a href="#pricing" className="btn-orange flex items-center gap-2 px-6 py-3.5">
+              <button onClick={handleBuy} className="btn-orange flex items-center gap-2 px-6 py-3.5">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
                 </svg>
-                Get Started — $15
-              </a>
+                Get Started — $19
+              </button>
               <a href="#how-it-works" className="btn-green-outline flex items-center gap-2 px-6 py-3.5">
                 See how it works
               </a>
@@ -352,10 +360,10 @@ export default function LandingPage() {
               {[
                 {
                   step: "01",
-                  emoji: "🥬",
-                  title: "Add your ingredients",
-                  desc: "Type whatever's in your fridge, no matter how sad it looks. FridgeFlow doesn't judge.",
-                  detail: "eggs, cheese, that one zucchini",
+                  emoji: "📸",
+                  title: "Snap or type your ingredients",
+                  desc: "Point your camera at the fridge and we'll detect what's inside — or type it manually. Either way, FridgeFlow doesn't judge.",
+                  detail: "Camera scan or text input",
                 },
                 {
                   step: "02",
@@ -406,16 +414,16 @@ export default function LandingPage() {
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <div>
             <h2 className="heading-chunky text-3xl sm:text-4xl leading-tight mb-5">
-              Just type what&apos;s in your fridge
+              Snap your fridge,<br />skip the typing
             </h2>
             <p className="body-mono text-[#6B6B6B] mb-8">
-              No app. No camera. No grocery list. Just type whatever sad combination of ingredients you have and FridgeFlow handles the rest.
+              On mobile, just open your camera, point it at the fridge or pantry, and FridgeFlow scans the photo — detecting your ingredients automatically. No typing, no guessing, no fridge staring.
             </p>
             <ul className="space-y-3">
               {[
-                "Works with any ingredient, any quantity",
-                "No account or sign-up required",
-                "Results in under 30 seconds",
+                "Camera scan on any phone",
+                "Auto-detects pantry staples",
+                "Prefer typing? That works too",
               ].map((point) => (
                 <li key={point} className="flex items-start gap-3 body-mono text-sm text-[#1A1A1A]">
                   <span className="mt-0.5 w-5 h-5 rounded-full bg-[#E8D84A] border-2 border-[#1A1A1A] flex items-center justify-center shrink-0">
@@ -429,34 +437,35 @@ export default function LandingPage() {
             </ul>
           </div>
 
-          {/* Mockup: ingredient input screen */}
-          <div className="bg-[#FFF8E8] border-2 border-[#1A1A1A] rounded-[24px] overflow-hidden shadow-[6px_6px_0px_#1A1A1A]">
-            <div className="bg-white border-b-2 border-[#1A1A1A] px-4 py-3 flex items-center gap-2">
-              <div className="flex gap-1.5">
-                <div className="w-3 h-3 rounded-full bg-[#FF5F57] border border-black/20" />
-                <div className="w-3 h-3 rounded-full bg-[#FEBC2E] border border-black/20" />
-                <div className="w-3 h-3 rounded-full bg-[#28C840] border border-black/20" />
-              </div>
-              <div className="flex-1 bg-[#F2EFE9] rounded-full px-3 py-1 mx-2">
-                <p className="text-[10px] text-[#9A9A9A] font-mono">fridgeflow.app</p>
-              </div>
-            </div>
+          {/* Mockup: camera scan result */}
+          <div className="bg-white border-2 border-[#1A1A1A] rounded-3xl overflow-hidden shadow-[6px_6px_0px_#1A1A1A]">
+            <div className="h-1.5 bg-[#E8682A]" />
             <div className="p-6">
-              <p className="text-xs font-bold text-[#2D6A4F] uppercase tracking-widest mb-4">What&apos;s in your fridge?</p>
-              <div className="bg-white border-2 border-[#1A1A1A] rounded-xl px-4 py-3 mb-3 flex items-center gap-2 shadow-[2px_2px_0_#1A1A1A]">
-                <span className="text-[#1A1A1A] text-sm font-mono flex-1">eggs, cheese, bread, garlic</span>
-                <span className="text-[#C0BAB0] text-sm">|</span>
+              {/* Header */}
+              <div className="flex items-center gap-2 mb-5">
+                <span className="text-xl">🔍</span>
+                <div>
+                  <p className="font-extrabold text-[#1A1A1A] text-base">Fridge report</p>
+                  <p className="text-[#9A9A9A] text-[10px] font-mono">No judgment (lie).</p>
+                </div>
               </div>
-              <button className="w-full bg-[#E8682A] border-2 border-[#1A1A1A] text-white font-bold text-sm py-2.5 rounded-xl shadow-[2px_2px_0_#1A1A1A]">
-                Generate Meals →
-              </button>
-              <div className="mt-5 flex flex-wrap gap-2">
-                {["🥚 Eggs", "🧀 Cheese", "🍞 Bread", "🧄 Garlic"].map((tag) => (
-                  <span key={tag} className="text-xs bg-[#D8F3DC] border border-[#2D6A4F]/20 text-[#2D6A4F] px-2.5 py-1 rounded-full font-medium">
-                    {tag}
+              {/* Vibe */}
+              <div className="bg-[#FFF8E8] border border-[#E8682A]/20 rounded-xl px-4 py-3 mb-5">
+                <p className="text-[#B45309] text-xs font-mono italic">&ldquo;Actually impressive. Are you a chef or just anxious?&rdquo;</p>
+              </div>
+              {/* Detected items */}
+              <p className="text-[10px] font-black text-[#9A9A9A] uppercase tracking-widest mb-2">Items detected</p>
+              <div className="flex flex-wrap gap-1.5 mb-5">
+                {["chicken", "garlic", "olive oil", "lemon", "spinach"].map((item) => (
+                  <span key={item} className="text-xs text-[#2D6A4F] bg-[#D8F3DC]/60 border border-[#2D6A4F]/15 px-2.5 py-1 rounded-full font-medium capitalize">
+                    {item}
                   </span>
                 ))}
               </div>
+              {/* CTA */}
+              <button className="w-full bg-[#2D6A4F] border-2 border-[#1A1A1A] text-white font-bold text-sm py-2.5 rounded-xl shadow-[2px_2px_0_#1A1A1A]">
+                Generate full recipes from these →
+              </button>
             </div>
           </div>
         </div>
@@ -657,7 +666,7 @@ export default function LandingPage() {
               </li>
             ))}
           </ul>
-          <button className="btn-orange w-full py-4 text-base">
+          <button onClick={handleBuy} className="btn-orange w-full py-4 text-base">
             Unlock Unlimited Meals
           </button>
           <p className="text-[#C0BAB0] text-xs mt-4">
@@ -693,11 +702,7 @@ export default function LandingPage() {
             {/* Brand */}
             <div className="sm:col-span-2">
               <div className="flex items-center gap-2 mb-4">
-                <div className="w-8 h-8 rounded-full bg-[#2D6A4F] flex items-center justify-center">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="white">
-                    <path d="M12 2C8 2 4 6 4 10c0 5 8 12 8 12s8-7 8-12c0-4-4-8-8-8z"/>
-                  </svg>
-                </div>
+                <img src="/fridgeflow-logo-removebg-preview.png" alt="FridgeFlow logo" className="w-10 h-10 object-contain" />
                 <span className="font-extrabold text-[#1A1A1A] text-lg tracking-tight">FridgeFlow</span>
               </div>
               <p className="text-[#6B6B6B] text-sm leading-relaxed max-w-xs mb-6">
