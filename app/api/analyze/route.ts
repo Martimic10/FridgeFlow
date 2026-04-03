@@ -53,7 +53,7 @@ export async function POST(req: NextRequest) {
   });
 
   const completion = await client.chat.completions.create({
-    model: "google/gemini-flash-1.5-8b",
+    model: "openai/gpt-4o-mini",
     messages: [
       {
         role: "system",
@@ -64,7 +64,7 @@ export async function POST(req: NextRequest) {
         content: [
           {
             type: "image_url",
-            image_url: { url: dataUrl, detail: "high" },
+            image_url: { url: dataUrl },
           },
           {
             type: "text",
