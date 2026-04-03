@@ -119,7 +119,7 @@ export async function POST(req: NextRequest) {
     });
 
     const completion = await client.chat.completions.create({
-      model: "google/gemini-flash-1.5-8b",
+      model: "google/gemini-flash-1.5",
       messages: [
         { role: "system", content: SYSTEM_PROMPT },
         { role: "user", content: USER_PROMPT(ingredients) },
