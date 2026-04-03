@@ -119,7 +119,7 @@ export async function POST(req: NextRequest) {
     });
 
     const completion = await client.chat.completions.create({
-      model: "anthropic/claude-3.5-haiku",
+      model: "google/gemini-flash-1.5-8b",
       messages: [
         { role: "system", content: SYSTEM_PROMPT },
         { role: "user", content: USER_PROMPT(ingredients) },

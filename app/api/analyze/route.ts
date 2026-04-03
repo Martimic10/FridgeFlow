@@ -53,7 +53,7 @@ export async function POST(req: NextRequest) {
   });
 
   const completion = await client.chat.completions.create({
-    model: "openai/gpt-4o-mini",
+    model: "google/gemini-flash-1.5-8b",
     messages: [
       {
         role: "system",
