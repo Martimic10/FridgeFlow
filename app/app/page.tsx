@@ -136,7 +136,7 @@ function RecipeCard({ recipe, index }: { recipe: Recipe; index: number }) {
             +
           </span>
         </button>
-        <div className={`overflow-hidden transition-all duration-300 ${open ? "max-h-150" : "max-h-0"}`}>
+        <div className={`overflow-hidden transition-all duration-500 ${open ? "max-h-500" : "max-h-0"}`}>
           <ol className="px-6 pb-6 space-y-3">
             {recipe.steps.map((step, i) => (
               <li key={i} className="flex gap-3">
