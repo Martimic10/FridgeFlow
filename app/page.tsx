@@ -290,7 +290,7 @@ export default function LandingPage() {
               disabled={buying}
               className="btn-orange mt-3 py-3 text-center text-sm"
             >
-              Get Started — $19
+              Get Started — $7
             </button>
           </div>
         )}
