@@ -217,9 +217,11 @@ function FaqItem({ q, a }: { q: string; a: string }) {
 export default function LandingPage() {
   const [menuOpen, setMenuOpen] = useState(false);
 
-  function handleBuy() {
-    document.cookie = "fridgeflow_paid=true; path=/; max-age=31536000";
-    window.location.href = "/app";
+  async function handleBuy() {
+    const res = await fetch("/api/checkout", { method: "POST" });
+    const { url, error } = await res.json();
+    if (error || !url) return;
+    window.location.href = url;
   }
 
   return (
