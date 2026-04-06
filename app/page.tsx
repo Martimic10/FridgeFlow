@@ -605,6 +605,56 @@ export default function LandingPage() {
           </div>
         </div>
 
+        {/* Feature 4 — real screenshot left, text right */}
+        <div className="grid lg:grid-cols-2 gap-12 items-center">
+
+          {/* Real screenshot */}
+          <div className="order-2 lg:order-1 bg-white border-2 border-[#1A1A1A] rounded-3xl overflow-hidden shadow-[6px_6px_0px_#1A1A1A]">
+            <div className="bg-[#E8682A] px-5 py-3 flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <span className="text-white text-sm font-bold">Live scan result</span>
+                <span className="flex items-center gap-1 bg-white/20 text-white text-[10px] font-mono px-2 py-0.5 rounded-full">
+                  <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
+                  REAL
+                </span>
+              </div>
+              <span className="text-xl">🔍</span>
+            </div>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/fridgeflow-camera.jpeg"
+              alt="FridgeFlow AI scan result"
+              className="w-full object-cover"
+            />
+          </div>
+
+          <div className="order-1 lg:order-2">
+            <h2 className="heading-chunky text-3xl sm:text-4xl leading-tight mb-5">
+              AI that actually
+              <br />sees your fridge
+            </h2>
+            <p className="body-mono text-[#6B6B6B] mb-8">
+              No ingredient left behind. FridgeFlow&apos;s vision AI scans your photo and picks out everything — the spices in the back, the condiments on the door, the leftovers on the shelf. Then it turns it all into real, cookable recipes.
+            </p>
+            <ul className="space-y-3">
+              {[
+                "Identifies items from a single photo",
+                "Catches the stuff you forgot you had",
+                "Works on messy, real-world fridges",
+              ].map((point) => (
+                <li key={point} className="flex items-start gap-3 body-mono text-sm text-[#1A1A1A]">
+                  <span className="mt-0.5 w-5 h-5 rounded-full bg-[#E8D84A] border-2 border-[#1A1A1A] flex items-center justify-center shrink-0">
+                    <svg width="9" height="9" viewBox="0 0 12 12" fill="none">
+                      <path d="M2 6l3 3 5-5" stroke="#1A1A1A" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                  </span>
+                  {point}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
       </section>
 
       {/* Why section */}
