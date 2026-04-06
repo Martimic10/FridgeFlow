@@ -17,6 +17,10 @@ const spaceMono = Space_Mono({
 export const metadata: Metadata = {
   title: "FridgeFlow — Real meals from what you already have",
   description: "Turn your random fridge ingredients into actual meals. No more staring at the fridge. No more takeout regret.",
+  icons: {
+    icon: "/fridgeflow-logo.png",
+    apple: "/fridgeflow-logo.png",
+  },
   openGraph: {
     title: "FridgeFlow — Real meals from what you already have",
     description: "Turn your random fridge ingredients into actual meals.",
